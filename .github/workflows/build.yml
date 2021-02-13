@@ -28,6 +28,7 @@ jobs:
           VULTR_BUILDER_VERSION:
         run: |
           pwd
+          ls -la
 
 #       wget https://github.com/vultr/packer-builder-vultr/releases/download/v$VULTR_BUILDER_VERSION/packer-builder-vultr_$VULTR_BUILDER_VERSION_linux_64-bit.tar.gz"
 #       tar -xzvf packer-builder-vultr_$VULTR_BUILDER_VERSION_linux_64-bit.tar.gz
