@@ -30,10 +30,9 @@ jobs:
         run: |
           wget https://github.com/vultr/packer-builder-vultr/releases/download/v$VULTR_BUILDER_V/packer-builder-vultr_${VULTR_BUILDER_V}_linux_64-bit.tar.gz
           tar -xzvf packer-builder-vultr_${VULTR_BUILDER_V}_linux_64-bit.tar.gz
-          ls -la
 
       - name: Clean previous builds if present
-        run: ./scripts/clean-latest.sh "$SNAPSHOT_DESC"
+        run: ./scripts/clean-latest.sh $SNAPSHOT_DESC
 
       - name: Validate Template
         uses: operatehappy/packer-github-actions@v0.2.0
