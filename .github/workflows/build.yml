@@ -23,6 +23,9 @@ jobs:
       VULTR_BUILDER_VERSION: 2.0.1
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
       - name: Install Vultr Packer Builder
         env:
           VULTR_BUILDER_VERSION:
