@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euxo
 
-apt -y install jq
+sudo apt -y install jq
 
 SNAPSHOT_DESC=$1
 SNAPSHOTS=$(curl --silent --location --request GET 'https://api.vultr.com/v2/snapshots' --header "Authorization: Bearer $VULTR_API_KEY" | jq -r --arg SNAPSHOT_DESC "$SNAPSHOT_DESC" '.snapshots[] | select(.description==$SNAPSHOT_DESC).id')

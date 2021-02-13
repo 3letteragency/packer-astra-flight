@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euxo
 
-apt -y install jq
+sudo apt -y install jq
 
 SNAPSHOT_DESC=$1
 RELEASE=$2
