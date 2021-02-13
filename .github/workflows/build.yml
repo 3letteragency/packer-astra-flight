@@ -16,7 +16,7 @@ jobs:
       S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
       S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
       ADMIN_SSH_KEY: ${{ secrets.ADMIN_SSH_KEY }}
-      TEST_WTF: 2.0.1
+      VULTR_BUILDER_V: 2.0.1
       OS_ID: 387
       REGION_ID: ewr
       PLAN_ID: vc2-1c-1gb
@@ -30,8 +30,8 @@ jobs:
         env:
           VULTR_BUILDER_VERSION:
         run: |
-          wget https://github.com/vultr/packer-builder-vultr/releases/download/v$VULTR_BUILDER_VERSION/packer-builder-vultr_$VULTR_BUILDER_VERSION_linux_64-bit.tar.gz"
-          tar -xzvf packer-builder-vultr_$VULTR_BUILDER_VERSION_linux_64-bit.tar.gz
+          wget https://github.com/vultr/packer-builder-vultr/releases/download/v$VULTR_BUILDER_V/packer-builder-vultr_$VULTR_BUILDER_V_linux_64-bit.tar.gz"
+          tar -xzvf packer-builder-vultr_$VULTR_BUILDER_V_linux_64-bit.tar.gz
           ls -la
 
       - name: Clean previous builds if present
