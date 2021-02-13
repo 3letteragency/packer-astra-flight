@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-latest:
+    runs-on: ubuntu-18.04
+    env:
+      VULTR_API_KEY: ${{ secrets.VULTR_API_KEY }}
+      S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+      S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+      ADMIN_SSH_KEY: ${{ secrets.ADMIN_SSH_KEY }}
+      OS_ID: "387"
+      REGION_ID: "ewr"
+      PLAN_ID: "vc2-1c-1gb"
+      SNAPSHOT_DESC: "astra-flight-latest"
+      VULTR_BUILDER_VERSION: "2.0.1"
+
+    steps:
+      - name: Install Vultr Packer Builder
+        run: |
+          wget "https://github.com/vultr/packer-builder-vultr/releases/download/v$VULTR_BUILDER_VERSION/packer-builder-vultr_$VULTR_BUILDER_VERSION_linux_64-bit.tar.gz"
+          tar -xzvf packer-builder-vultr_$VULTR_BUILDER_VERSION_linux_64-bit.tar.gz
+
+      - name: Clean previous builds if present
+        run: ./scripts/clean-latest.sh "$SNAPSHOT_DESC"
+
+      - name: Validate Template
+        uses: operatehappy/packer-github-actions@v0.2.0
+        with:
+          command: validate
+          arguments: -syntax-only
+          target: astra.json
+
+      - name: Build Astra
+        uses: operatehappy/packer-github-actions@v0.2.0
+        with:
+          command: build
+          target: astra.json

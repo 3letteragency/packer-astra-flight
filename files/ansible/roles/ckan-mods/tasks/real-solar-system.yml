@@ -1,0 +1,9 @@
+- name: Install Real Solar System Textures via CKAN
+  command: /usr/bin/ckan install --headless RSSTextures2048
+  become: yes
+  become_user: "{{ game_user }}"
+
+- name: Install Real Solar System via CKAN
+  command: /usr/bin/ckan install --headless --no-recommends RealSolarSystem
+  become: yes
+  become_user: "{{ game_user }}"

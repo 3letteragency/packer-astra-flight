@@ -1,0 +1,32 @@
+- name: Create kRPC tmp dir for extract
+  file:
+    path: "{{ krpc_tmp_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Get kRPC
+  unarchive:
+    src: "{{ krpc_zip_url }}"
+    remote_src: yes
+    dest: "{{ krpc_tmp_dir }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Install kRPC to game directory
+  copy:
+    src: "{{ krpc_tmp_dir }}/GameData/kRPC"
+    dest: "{{ ksp_install_dir }}/GameData"
+    owner: "{{ game_user }}"
+    group: "{{ game_user }}"
+
+- name: Configure kRPC
+  copy:
+    src: files/krpc-settings.cfg
+    dest: "{{ ksp_install_dir }}/GameData/kRPC/PluginData/settings.cfg"
+    owner: "{{ game_user }}"
+    group: "{{ game_user }}"
+    mode: '0644'
+
+- name: Cleanup
+  file:
+    path: "{{ krpc_tmp_dir }}"
+    state: absent

@@ -1,0 +1,2 @@
+---
+ckan_deb_url: https://github.com/KSP-CKAN/CKAN/releases/download/v{{ ckan_version }}/ckan_{{ ckan_version }}_all.deb

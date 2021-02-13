@@ -1,0 +1,16 @@
+name: Release
+
+on:
+  create:
+    tags:
+      - v*
+
+jobs:
+  astra-release:
+    runs-on: ubuntu-18.04
+    env:
+      VULTR_API_KEY: ${{ secrets.VULTR_API_KEY }}
+
+    steps:
+      - name: Promote latest snapshot
+        run: ./scripts/clean-latest.sh "$SNAPSHOT_DESC" "$GITHUB_REF"

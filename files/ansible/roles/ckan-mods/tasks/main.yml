@@ -1,0 +1,38 @@
+- name: Add KSP Install to CKAN
+  command: /usr/bin/ckan ksp add astra "{{ ksp_install_dir }}"
+  become: yes
+  become_user: "{{ game_user }}"
+  failed_when: result.rc == 1
+  register: result
+
+- name: Update CKAN Index
+  command: /usr/bin/ckan update --headless
+  become: yes
+  become_user: "{{ game_user }}"
+
+- name: Check if RSS Is installed
+  stat:
+    path: "{{ ksp_install_dir }}/GameData/RealSolarSystem"
+  register: stat_rss
+
+- name: Install RSS
+  import_tasks: real-solar-system.yml
+  when: not stat_rss.stat.exists
+
+- name: Check if RO is installed
+  stat:
+    path: "{{ ksp_install_dir }}/GameData/RealismOverhaul"
+  register: stat_ro
+
+- name: Install RO
+  import_tasks: realism-overhaul.yml
+  when: not stat_ro.stat.exists
+
+- name: Check if SpaceX Vehicles are installed
+  stat:
+    path: "{{ ksp_install_dir }}/GameData/Launchers\ Pack"
+  register: stat_spacex
+
+- name: Install SpaceX Launchers
+  import_tasks: spacex-launch-vehicles.yml
+  when: not stat_spacex.stat.exists

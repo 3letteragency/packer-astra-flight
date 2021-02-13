@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  vars:
+    vultr_s3_url: https://ewr1.vultrobjects.com
+    project_s3_bucket: astra-assets
+    game_user: astra
+    ksp_version: 1.8.1
+    ckan_version: 1.28.0
+    ksp_install_dir: /home/astra/ksp
+    s3_game_archive_prefix: game-archives
+    ksp_tar_filename: "ksp-{{ ksp_version }}.tar.gz"
+    krpc_version: 0.4.9.1
+    krpc_zip_url: https://github.com/haeena/krpc/releases/download/v{{ krpc_version }}/krpc-{{ krpc_version }}.zip
+    autoloadgame_version: 1.0.10
+    autoloadgame_zip_url: https://github.com/allista/AutoLoadGame/releases/download/v{{ autoloadgame_version }}/AutoLoadGame-v{{ autoloadgame_version }}.zip
+    principia_codename: galois
+    principia_version: 1.9.1
+
+  roles:
+    - users
+    - deps
+    - game
+    - raw-mods
+    - ckan-mods

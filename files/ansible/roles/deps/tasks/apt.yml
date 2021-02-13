@@ -1,0 +1,39 @@
+- name: Install mono-runtime
+  apt:
+    name: mono-runtime
+    state: present
+
+- name: Install unzip
+  apt:
+    name: unzip
+    state: present
+
+- name: Install xvfb(graphical debugging)
+  apt:
+    name: xvfb
+    state: present
+
+- name: Install x11vnc(graphical debugging)
+  apt:
+    name: x11vnc
+    state: present
+
+- name: Install libc++ 8(principia dep)
+  apt:
+    name: libc++1-8
+    state: present
+
+- name: Install libc++ abi 8(principia dep)
+  apt:
+    name: libc++abi1-8
+    state: present
+
+- name: Install CKAN
+  apt:
+    deb: "{{ task_vars.ckan_deb_url }}"
+    state: present
+
+- name: Install boto3 py lib for S3 tasks
+  apt:
+    name: python3-boto3
+    state: present

@@ -1,0 +1,30 @@
+- name: Create ALG tmp dir for extract
+  file:
+    path: "{{ alg_tmp_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Get AutoLoadGame
+  unarchive:
+   src: "{{ autoloadgame_zip_url }}"
+   remote_src: yes
+   dest: "{{ alg_tmp_dir }}"
+
+- name: Install AutoLoadGame to game directory
+  copy:
+    src: "{{ alg_tmp_dir }}/GameData/AutoLoadGame"
+    dest: "{{ ksp_install_dir }}/GameData"
+    owner: "{{ game_user }}"
+    group: "{{ game_user }}"
+
+- name: Configure AutoLoadGame for Astra
+  copy:
+    src: files/AutoLoadGame.conf
+    dest: "{{ ksp_install_dir }}/saves/AutoLoadGame.conf"
+    owner: "{{ game_user }}"
+    group: "{{ game_user }}"
+
+- name: Autoloadgame Cleanup
+  file:
+    path: "{{ alg_tmp_dir }}"
+    state: absent

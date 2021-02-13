@@ -1,0 +1,24 @@
+- name: Create tmp dir for extract
+  file:
+    path: {{ role_vars.spacex_tmp_dir }}
+    state: directory
+    mode: '0755'
+
+- name: Get
+  unarchive:
+   src: {{ spacex_zip_url }}
+   remote_src: yes
+   dest: {{ role_vars._tmp_dir }}
+
+- name: Install SpaceX Launch Vehicles to game directory
+  file:
+    src: {{ role_vars._tmp_dir }}/GameData/
+    dest: {{ ksp_install_dir }}/GameData
+    owner: {{ game_user }}
+    group: {{ game_user }}
+    remote_src: yes
+
+- name: Cleanup
+  file:
+    path: {{ role_vars._tmp_dir }}
+    state: absent

@@ -1,0 +1,29 @@
+- include_vars: role-vars.yml
+
+- name: Check if kRPC is installed
+  stat:
+    path: "{{ ksp_install_dir }}/GameData/kRPC"
+  register: stat_krpc
+
+- name: Install/configure kRPC
+  import_tasks: krpc.yml
+  when: not stat_krpc.stat.exists
+
+#- name: Check if AutoLoadGame is installed
+#  stat:
+#    path: "{{ ksp_install_dir }}/GameData/AutoLoadGame"
+#  register: stat_alg
+
+# Always install/configure ALG - will need to stat _every_ related file or break up the tasks more at some point.
+- name: Install/configure AutoLoadGame
+  import_tasks: autoloadgame.yml
+#  when: not stat_alg.stat.exists
+
+- name: Check if Principia is installed
+  stat:
+    path: "{{ ksp_install_dir }}/GameData/Principia"
+  register: stat_principia
+
+- name: Install/configure Principia
+  import_tasks: principia.yml
+  when: not stat_principia.stat.exists

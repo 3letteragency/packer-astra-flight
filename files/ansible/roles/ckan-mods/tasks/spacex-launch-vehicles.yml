@@ -1,0 +1,9 @@
+- name: Install 1.9.1 KSP Compat for this mod(it works on 1.8.1)
+  command: /usr/bin/ckan compat add 1.9.1
+  become: yes
+  become_user: "{{ game_user }}"
+
+- name: Install KK's SpaceX Launch Vehicles via CKAN
+  command: /usr/bin/ckan install --headless SpaceXLaunchVehicles
+  become: yes
+  become_user: "{{ game_user }}"

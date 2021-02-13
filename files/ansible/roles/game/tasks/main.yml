@@ -1,0 +1,72 @@
+# We use geturl mode instead of just getting the archive so we can use the Unarchive module below
+- name: Get Game URL from S3
+  aws_s3:
+    rgw: yes
+    s3_url: "{{ vultr_s3_url }}"
+    aws_access_key: "{{ s3_access_key }}"
+    aws_secret_key: "{{ s3_secret_key }}"
+    bucket: "{{ project_s3_bucket }}"
+    object: "{{ s3_game_archive_prefix }}/{{ ksp_tar_filename }}"
+    mode: geturl
+  register: game_s3
+
+- name: Create game install directory
+  file:
+    path: "{{ ksp_install_dir }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ game_user }}"
+    group: "{{ game_user }}"
+
+# We use geturl mode in the aws_s3 module aboveinstead of just getting the archive with that so we can use the Unarchive module below
+- name: Install game
+  unarchive:
+    src: "{{ game_s3.url }}"
+    dest: "{{ ksp_install_dir }}"
+    remote_src: yes
+    owner: "{{ game_user }}"
+    group: "{{ game_user }}"
+    creates: "{{ ksp_install_dir }}/KSP.x86_64"
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Configure game
+  copy:
+    src: files/ksp-settings.cfg
+    dest: "{{ ksp_install_dir }}/settings.cfg"
+    owner: "{{ game_user }}"
+    group: "{{ game_user }}"
+    mode: '0644'
+
+- name: Add Astra base game save
+  copy:
+    src: files/Astra
+    dest: "{{ ksp_install_dir }}/saves"
+    owner: "{{ game_user }}"
+    group: "{{ game_user }}"
+
+- name: Create Astra systemd user service directory
+  file:
+    path: "/home/{{ game_user }}/.config/systemd/user/"
+    state: directory
+    recurse: yes
+    owner: "{{ game_user }}"
+    group: "{{ game_user }}"
+
+- name: Write Astra systemd user service
+  copy:
+    src: "files/astra.service"
+    dest: "/home/{{ game_user }}/.config/systemd/user/"
+    owner: "{{ game_user }}"
+    group: "{{ game_user }}"
+
+- name: Start game users systemd instance on boot
+  command: "loginctl enable-linger {{ game_user }}"
+
+- name: Enable Astra systemd service
+  become: true
+  become_user: "{{ game_user }}"
+  systemd:
+    name: astra
+    enabled: yes
+    scope: user
+   

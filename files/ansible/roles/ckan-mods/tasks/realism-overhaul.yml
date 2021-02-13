@@ -1,0 +1,4 @@
+- name: Install Realism Overhaul via CKAN
+  command: /usr/bin/ckan install --headless --no-recommends RealismOverhaul
+  become: yes
+  become_user: "{{ game_user }}"

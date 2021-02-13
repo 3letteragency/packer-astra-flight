@@ -1,0 +1,11 @@
+- name: Load task vars
+  include_vars:
+    file: task-vars.yml
+    name: task_vars
+
+- name: Apt update
+  apt:
+    update_cache: yes
+
+- name: Install Astra dependencies
+  import_tasks: apt.yml

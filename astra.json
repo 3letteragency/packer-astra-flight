@@ -1,0 +1,42 @@
+{
+  "variables": {
+    "vultr_api_key": "{{ env `VULTR_API_KEY` }}",
+    "s3_access_key": "{{ env `S3_ACCESS_KEY` }}",
+    "s3_secret_key": "{{ env `S3_SECRET_KEY` }}",
+    "admin_ssh_key": "{{ env `ADMIN_SSH_KEY` }}",
+    "snapshot_desc": "{{ env `SNAPSHOT_DESC` }}",
+    "os_id": "{{ env `OS_ID` }}",
+    "region_id": "{{ env `REGION_ID` }}",
+    "plan_id": "{{ env `PLAN_ID` }}"
+  },
+  "builders": [
+    {
+      "type": "vultr",
+      "api_key": "{{ user `vultr_api_key` }}",
+      "os_id": "{{ user `os_id` }}",
+      "region_id": "{{ user `region_id` }}",
+      "plan_id": "{{ user `plan_id` }}",
+      "snapshot_description": "{{ user `snapshot_desc` }}",
+      "ssh_username": "root",
+      "state_timeout": "60m",
+      "instance_label": "astra-flight",
+      "hostname": "astra-flight"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "apt -y update",
+        "apt -y install ansible",
+        "echo \"${{ user `admin_ssh_key` }}\" >> ~/.ssh/authorized_keys"
+      ]
+    },
+    {
+      "type": "ansible-local",
+      "playbook_dir": "files/ansible",
+      "playbook_file": "files/ansible/astra.yml",
+      "extra_arguments": ["--extra-vars", "\"s3_access_key={{ user `s3_access_key` }} s3_secret_key={{ user `s3_secret_key` }}\""]
+    }
+  ]
+}

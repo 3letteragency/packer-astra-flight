@@ -1,0 +1,34 @@
+- name: Get Principia ZIP URL from S3
+  aws_s3:
+    rgw: yes
+    s3_url: "{{ vultr_s3_url }}"
+    aws_access_key: "{{ s3_access_key }}"
+    aws_secret_key: "{{ s3_secret_key }}"
+    bucket: "{{ project_s3_bucket }}"
+    object: "principia/principia-{{ principia_codename }}-{{ principia_version }}.zip"
+    mode: geturl
+  register: principia_s3
+
+- name: Create Principia tmp dir for extract
+  file:
+    path: "{{ principia_tmp_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Get Principia
+  unarchive:
+   src: "{{ principia_s3.url }}"
+   remote_src: yes
+   dest: "{{ principia_tmp_dir }}"
+
+- name: Install Principia to game directory
+  copy:
+    src: "{{ principia_tmp_dir }}/GameData/Principia"
+    dest: "{{ ksp_install_dir }}/GameData"
+    owner: "{{ game_user }}"
+    group: "{{ game_user }}"
+
+- name: Cleanup
+  file:
+    path: "{{ principia_tmp_dir }}"
+    state: absent

@@ -1,0 +1,9 @@
+[Unit]
+Description=Launches a headless Kerbal Space Program instance for the Astra project
+
+[Service]
+WorkingDirectory=/home/astra/ksp
+ExecStart=/home/astra/ksp/KSP.x86_64 -batchmode -nographics -job-worker-count 6 -logFile /home/astra/ksp/unity.log
+
+[Install]
+WantedBy=default.target
