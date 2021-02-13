@@ -27,10 +27,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Vultr Packer Builder
-        env:
-          VULTR_BUILDER_VERSION:
         run: |
-          wget https://github.com/vultr/packer-builder-vultr/releases/download/v"$VULTR_BUILDER_V"/packer-builder-vultr_"$VULTR_BUILDER_V"_linux_64-bit.tar.gz"
+          wget "https://github.com/vultr/packer-builder-vultr/releases/download/v$VULTR_BUILDER_V/packer-builder-vultr_$VULTR_BUILDER_V_linux_64-bit.tar.gz"
           tar -xzvf packer-builder-vultr_"$VULTR_BUILDER_V"_linux_64-bit.tar.gz
           ls -la
 
