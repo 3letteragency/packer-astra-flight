@@ -24,9 +24,12 @@ jobs:
 
     steps:
       - name: Install Vultr Packer Builder
+        env:
+          VULTR_BUILDER_VERSION:
         run: |
-          wget "https://github.com/vultr/packer-builder-vultr/releases/download/v$VULTR_BUILDER_VERSION/packer-builder-vultr_$VULTR_BUILDER_VERSION_linux_64-bit.tar.gz"
-          tar -xzvf packer-builder-vultr_$VULTR_BUILDER_VERSION_linux_64-bit.tar.gz
+          pwd
+          wget https://github.com/vultr/packer-builder-vultr/releases/download/v"$VULTR_BUILDER_VERSION"/packer-builder-vultr_"$VULTR_BUILDER_VERSION"_linux_64-bit.tar.gz"
+          tar -xzvf packer-builder-vultr_"$VULTR_BUILDER_VERSION"_linux_64-bit.tar.gz
 
       - name: Clean previous builds if present
         run: ./scripts/clean-latest.sh "$SNAPSHOT_DESC"
