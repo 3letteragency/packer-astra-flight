@@ -16,7 +16,7 @@ jobs:
       S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
       S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
       ADMIN_SSH_KEY: ${{ secrets.ADMIN_SSH_KEY }}
-      VULTR_BUILDER_VERSION: 2.0.1
+      TEST_WTF: 2.0.1
       OS_ID: 387
       REGION_ID: ewr
       PLAN_ID: vc2-1c-1gb
