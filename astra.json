@@ -29,7 +29,7 @@
       "inline": [
         "apt -y update",
         "apt -y install ansible",
-        "echo \"${{ user `admin_ssh_key` }}\" >> ~/.ssh/authorized_keys"
+        "echo {{ user `admin_ssh_key` }} >> ~/.ssh/authorized_keys"
       ]
     },
     {
